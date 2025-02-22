@@ -12,6 +12,8 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 h-16">
         <div className="flex items-center justify-between h-full">
+
+          {/* Home Page */}
           <div className="flex items-center gap-8">
             <Link
               to="/"
@@ -25,6 +27,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Settings Icon */}
             <Link
               to={"/settings"}
               className="btn btn-sm gap-2 transition-colors"
@@ -33,7 +36,7 @@ const Navbar = () => {
               <span className="hidden sm:inline">Settings</span>
             </Link>
 
-            {authUser && (
+            {authUser && ( //Show only when user gets loggedin
               <>
                 <Link to={"/profile"} className="btn btn-sm gap-2">
                   <User className="size-5" />
@@ -48,6 +51,7 @@ const Navbar = () => {
             )}
           </div>
         </div>
+
       </div>
     </header>
   );

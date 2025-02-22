@@ -14,6 +14,7 @@ const SignUpPage = () => {
 
   const { signup, isSigningUp } = useAuthStore();
 
+  //Form Validation
   const validateForm = () => {
     if (!formData.fullName.trim()) return toast.error("Full name is required");
     if (!formData.email.trim()) return toast.error("Email is required");
@@ -25,6 +26,7 @@ const SignUpPage = () => {
     return true;
   };
 
+  //Submit
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) signup(formData);
@@ -41,6 +43,7 @@ const SignUpPage = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Full Name */}
           <div className="relative">
             <User className="absolute left-3 top-3 size-5 text-gray-400" />
             <input
@@ -54,6 +57,7 @@ const SignUpPage = () => {
             />
           </div>
 
+          {/* Email */}
           <div className="relative">
             <Mail className="absolute left-3 top-3 size-5 text-gray-400" />
             <input
@@ -67,6 +71,7 @@ const SignUpPage = () => {
             />
           </div>
 
+          {/* Password */}
           <div className="relative">
             <Lock className="absolute left-3 top-3 size-5 text-gray-400" />
             <input
@@ -78,6 +83,7 @@ const SignUpPage = () => {
                 setFormData({ ...formData, password: e.target.value })
               }
             />
+            {/* Show Password Button */}
             <button
               type="button"
               className="absolute right-3 top-3"
@@ -91,6 +97,7 @@ const SignUpPage = () => {
             </button>
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="btn btn-primary w-full"

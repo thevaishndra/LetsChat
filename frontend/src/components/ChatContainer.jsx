@@ -19,11 +19,10 @@ const ChatContainer = () => {
   const messageEndRef = useRef(null);
 
   useEffect(() => {
-    getMessages(selectedUser._id);
-
-    subscribeToMessages();
-
-    return () => unsubscribeFromMessages();
+    //runs when the id changes
+    getMessages(selectedUser._id);//fetch messages for selected user
+    subscribeToMessages();//new messages for real time updates
+    return () => unsubscribeFromMessages();//cleans up when component is not available
   }, [
     selectedUser._id,
     getMessages,
@@ -31,9 +30,10 @@ const ChatContainer = () => {
     unsubscribeFromMessages,
   ]);
 
+  //Auto scrolling
   useEffect(() => {
     if (messageEndRef.current && messages) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });//scrolls to latest messages
     }
   }, [messages]);
 
@@ -54,11 +54,12 @@ const ChatContainer = () => {
         {messages.map((message) => (
           <div
             key={message._id}
-            className={`chat ${
+            className={`chat ${//if logged in user sends message align to right side
               message.senderId === authUser._id ? "chat-end" : "chat-start"
             }`}
-            ref={messageEndRef}
-          >
+            ref={messageEndRef}>
+
+              {/* Profile pic */}
             <div className=" chat-image avatar">
               <div className="size-10 rounded-full border">
                 <img
@@ -71,11 +72,15 @@ const ChatContainer = () => {
                 />
               </div>
             </div>
+
+            {/* Time */}
             <div className="chat-header mb-1">
               <time className="text-xs opacity-50 ml-1">
                 {formatMessageTime(message.createdAt)}
               </time>
             </div>
+
+            {/* chat bubble */}
             <div className="chat-bubble flex flex-col bg-primary text-white">
               {message.image && (
                 <img

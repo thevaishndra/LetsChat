@@ -13,6 +13,7 @@ const LoginPage = () => {
 
   const { login, isLoggingIn } = useAuthStore();
 
+  //Form Validation
   const validateForm = () => {
     if (!formData.email.trim()) return toast.error("Email is required");
     if (!/\S+@\S+\.\S+/.test(formData.email))
@@ -21,6 +22,7 @@ const LoginPage = () => {
     return true;
   };
 
+  //Submit
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) login(formData);
@@ -37,6 +39,7 @@ const LoginPage = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Email */}
           <div className="relative">
             <Mail className="absolute left-3 top-3 size-5 text-gray-400" />
             <input
@@ -49,7 +52,8 @@ const LoginPage = () => {
               }
             />
           </div>
-
+          
+          {/* Password */}
           <div className="relative">
             <Lock className="absolute left-3 top-3 size-5 text-gray-400" />
             <input
@@ -61,10 +65,11 @@ const LoginPage = () => {
                 setFormData({ ...formData, password: e.target.value })
               }
             />
+            {/* Show password button */}
             <button
               type="button"
               className="absolute right-3 top-3"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => setShowPassword(!showPassword)}//toggles, changes the earlier value
             >
               {showPassword ? (
                 <EyeOff className="size-5 text-gray-400" />
@@ -74,10 +79,11 @@ const LoginPage = () => {
             </button>
           </div>
 
+          {/* Submit button */}
           <button
             type="submit"
             className="btn btn-primary w-full"
-            disabled={isLoggingIn}
+            disabled={isLoggingIn}//unclickable and is false, so we can navigate
           >
             {isLoggingIn ? (
               <>

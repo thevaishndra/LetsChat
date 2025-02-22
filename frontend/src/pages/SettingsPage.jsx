@@ -15,6 +15,7 @@ const SettingsPage = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+          {/* Looping through themes and creates a button*/}
           {THEMES.map((t) => (
             <button
               key={t}
@@ -24,10 +25,11 @@ const SettingsPage = () => {
               `}
               onClick={() => setTheme(t)}
             >
+
+              {/* Displaying theme colors in 4 column grid*/}
               <div
                 className="relative h-10 w-full rounded-md overflow-hidden"
-                data-theme={t}
-              >
+                data-theme={t}>
                 <div className="absolute inset-0 grid grid-cols-4 gap-px p-1">
                   <div className="rounded bg-primary"></div>
                   <div className="rounded bg-secondary"></div>
@@ -35,12 +37,15 @@ const SettingsPage = () => {
                   <div className="rounded bg-neutral"></div>
                 </div>
               </div>
+
+              {/* theme names */}
               <span className="text-[11px] font-medium truncate w-full text-center">
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </span>
             </button>
           ))}
         </div>
+
       </div>
     </div>
   );

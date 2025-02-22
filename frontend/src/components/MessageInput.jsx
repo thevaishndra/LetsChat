@@ -9,13 +9,16 @@ const MessageInput = () => {
   const fileInputRef = useRef(null);
   const { sendMessage } = useChatStore();
 
+  //Handling image selection
   const handleImageChange = (e) => {
+    //fetch and check if the file is an image
     const file = e.target.files[0];
     if (!file.type.startsWith("image/")) {
       toast.error("Please select an image file");
       return;
     }
 
+    //image to base64 string
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
@@ -23,14 +26,16 @@ const MessageInput = () => {
     reader.readAsDataURL(file);
   };
 
+  //clears image
   const removeImage = () => {
     setImagePreview(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  //sending a message
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!text.trim() && !imagePreview) return;
+    if (!text.trim() && !imagePreview) return;//prevents sending empty messages
 
     try {
       await sendMessage({
@@ -38,7 +43,7 @@ const MessageInput = () => {
         image: imagePreview,
       });
 
-      // Clear form
+      // Clear form and resets input
       setText("");
       setImagePreview(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -49,6 +54,7 @@ const MessageInput = () => {
 
   return (
     <div className="p-4 w-full">
+      {/* preview of selected image before sending */}
       {imagePreview && (
         <div className="mb-3 flex items-center gap-2">
           <div className="relative">
@@ -57,6 +63,7 @@ const MessageInput = () => {
               alt="Preview"
               className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
             />
+            {/* before sending we can remove */}
             <button
               onClick={removeImage}
               className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
@@ -85,16 +92,18 @@ const MessageInput = () => {
             ref={fileInputRef}
             onChange={handleImageChange}
           />
-
+          {/* select image button */}
           <button
-            type="button"
-            className={`hidden sm:flex btn btn-circle
+            type="button"//it's hidden input
+            className={`hidden sm:flex btn btn-circle 
                      ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
           </button>
         </div>
+
+        {/* send button */}
         <button
           type="submit"
           className="btn btn-sm btn-circle"
@@ -103,6 +112,7 @@ const MessageInput = () => {
           <Send size={22} />
         </button>
       </form>
+
     </div>
   );
 };

@@ -10,13 +10,13 @@ const ProfilePage = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+    const reader = new FileReader();//using fileReader to read and to convert base64 string
+    reader.readAsDataURL(file);//read image as base64 string, as image it can be stored as text
 
     reader.onload = async () => {
       const base64Image = reader.result;
-      setSelectedImg(base64Image);
-      await updateProfile({ profilePic: base64Image });
+      setSelectedImg(base64Image);//update the ui
+      await updateProfile({ profilePic: base64Image });//from zustand to update in database
     };
   };
 
@@ -29,6 +29,7 @@ const ProfilePage = () => {
         </div>
 
         <div className="flex flex-col items-center gap-4 mt-6">
+          {/* ProfilePic */}
           <div className="relative">
             <img
               src={selectedImg || authUser.profilePic || "/avatar.png"}
@@ -46,12 +47,13 @@ const ProfilePage = () => {
                 type="file"
                 id="avatar-upload"
                 className="hidden"
-                accept="image/*"
+                accept="image/*"//only accept image files
                 onChange={handleImageUpload}
                 disabled={isUpdatingProfile}
               />
             </label>
           </div>
+
           <p className="text-sm text-gray-500 text-center px-2">
             {isUpdatingProfile
               ? "Uploading..."
@@ -59,6 +61,7 @@ const ProfilePage = () => {
           </p>
         </div>
 
+        {/* Full Name */}
         <div className="space-y-4 mt-6">
           <div className="space-y-1.5">
             <div className="text-sm text-gray-500 flex items-center gap-2">
@@ -70,6 +73,7 @@ const ProfilePage = () => {
             </p>
           </div>
 
+          {/* Email */}
           <div className="space-y-1.5">
             <div className="text-sm text-gray-500 flex items-center gap-2">
               <Mail className="w-4 h-4" />
@@ -81,10 +85,12 @@ const ProfilePage = () => {
           </div>
         </div>
 
+        {/* Account Info */}
         <div className="mt-6 bg-gray-100 rounded-xl p-4">
           <h2 className="text-lg font-medium text-primary mb-4">
             Account Information
           </h2>
+
           <div className="space-y-3 text-sm">
             <div className="flex items-center justify-between py-2 border-b border-gray-300">
               <span>Member Since</span>
@@ -96,12 +102,14 @@ const ProfilePage = () => {
                 })}
               </span>
             </div>
+
             <div className="flex items-center justify-between py-2">
               <span>Account Status</span>
               <span className="text-green-500">Active</span>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
