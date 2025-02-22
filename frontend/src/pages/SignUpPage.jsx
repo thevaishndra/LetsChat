@@ -31,10 +31,12 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200 p-6">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8 space-y-6">
+    <div className="min-h-screen flex items-center justify-center bg-base-200 p-4 sm:p-6">
+      <div className="w-full max-w-sm sm:max-w-md bg-white shadow-lg rounded-2xl p-6 sm:p-8 space-y-6">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-primary">LetsChat</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary">
+            LetsChat
+          </h1>
           <p className="text-base-content/60">Create your account</p>
         </div>
 

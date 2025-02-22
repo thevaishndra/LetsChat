@@ -6,7 +6,7 @@ const SettingsPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 p-4 pt-20">
-      <div className="w-full max-w-5xl bg-white p-12 rounded-xl shadow-lg space-y-6">
+      <div className="w-full max-w-5xl bg-white p-6 sm:p-12 rounded-xl shadow-lg space-y-6">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-primary">Theme</h1>
           <p className="text-gray-500">
@@ -14,7 +14,7 @@ const SettingsPage = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
           {THEMES.map((t) => (
             <button
               key={t}

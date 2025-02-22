@@ -3,7 +3,6 @@ import { useEffect, useRef } from "react";
 
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
-import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
 import { formatMessageTime } from "../lib/utils";
 
@@ -42,7 +41,6 @@ const ChatContainer = () => {
     return (
       <div className="flex-1 flex flex-col overflow-auto">
         <ChatHeader />
-        <MessageSkeleton />
         <MessageInput />
       </div>
     );
@@ -78,7 +76,7 @@ const ChatContainer = () => {
                 {formatMessageTime(message.createdAt)}
               </time>
             </div>
-            <div className="chat-bubble flex flex-col">
+            <div className="chat-bubble flex flex-col bg-primary text-white">
               {message.image && (
                 <img
                   src={message.image}
@@ -97,4 +95,3 @@ const ChatContainer = () => {
   );
 };
 export default ChatContainer;
-   

@@ -1,107 +1,105 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Camera, Mail, User } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
-const ProfilePage = () => {
-  const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
-  const [selectedImg, setSelectedImg] = useState(null);
+const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const { login, isLoggingIn } = useAuthStore();
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+  const validateForm = () => {
+    if (!formData.email.trim()) return toast.error("Email is required");
+    if (!/\S+@\S+\.\S+/.test(formData.email))
+      return toast.error("Invalid email format");
+    if (!formData.password) return toast.error("Password is required");
+    return true;
+  };
 
-    reader.onload = async () => {
-      const base64Image = reader.result;
-      setSelectedImg(base64Image);
-      await updateProfile({ profilePic: base64Image });
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) login(formData);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200 p-6">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6 border border-gray-200">
+    <div className="min-h-screen flex items-center justify-center bg-base-200 p-4 sm:p-6">
+      <div className="w-full max-w-sm sm:max-w-md bg-white shadow-lg rounded-2xl p-6 sm:p-8 space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-primary">Profile</h1>
-          <p className="mt-2 text-gray-500">Your profile information</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary">
+            LetsChat
+          </h1>
+          <p className="text-base-content/60">Sign in to your account</p>
         </div>
 
-        {/* Avatar upload section */}
-        <div className="flex flex-col items-center gap-4 mt-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
-            <img
-              src={selectedImg || authUser.profilePic || "/avatar.png"}
-              alt="Profile"
-              className="size-28 rounded-full object-cover border-4 border-primary"
+            <Mail className="absolute left-3 top-3 size-5 text-gray-400" />
+            <input
+              type="email"
+              className="input input-bordered w-full pl-10"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
             />
-            <label
-              htmlFor="avatar-upload"
-              className={`
-                absolute bottom-0 right-0 bg-primary hover:scale-105
-                p-2 rounded-full cursor-pointer transition-all duration-200
-                ${isUpdatingProfile ? "animate-pulse pointer-events-none" : ""}
-              `}
+          </div>
+
+          <div className="relative">
+            <Lock className="absolute left-3 top-3 size-5 text-gray-400" />
+            <input
+              type={showPassword ? "text" : "password"}
+              className="input input-bordered w-full pl-10 pr-10"
+              placeholder="Password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-3"
+              onClick={() => setShowPassword(!showPassword)}
             >
-              <Camera className="w-5 h-5 text-white" />
-              <input
-                type="file"
-                id="avatar-upload"
-                className="hidden"
-                accept="image/*"
-                onChange={handleImageUpload}
-                disabled={isUpdatingProfile}
-              />
-            </label>
+              {showPassword ? (
+                <EyeOff className="size-5 text-gray-400" />
+              ) : (
+                <Eye className="size-5 text-gray-400" />
+              )}
+            </button>
           </div>
-          <p className="text-sm text-gray-500">
-            {isUpdatingProfile
-              ? "Uploading..."
-              : "Click the camera icon to update your photo"}
+
+          <button
+            type="submit"
+            className="btn btn-primary w-full"
+            disabled={isLoggingIn}
+          >
+            {isLoggingIn ? (
+              <>
+                <Loader2 className="size-5 animate-spin" /> Signing In...
+              </>
+            ) : (
+              "Sign In"
+            )}
+          </button>
+        </form>
+
+        <div className="text-center text-sm">
+          <p>
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-primary font-medium">
+              Create account
+            </Link>
           </p>
-        </div>
-
-        <div className="space-y-4 mt-6">
-          <div className="space-y-1.5">
-            <div className="text-sm text-gray-500 flex items-center gap-2">
-              <User className="w-4 h-4" />
-              Full Name
-            </div>
-            <p className="px-4 py-2.5 bg-gray-100 rounded-lg border">
-              {authUser?.fullName}
-            </p>
-          </div>
-
-          <div className="space-y-1.5">
-            <div className="text-sm text-gray-500 flex items-center gap-2">
-              <Mail className="w-4 h-4" />
-              Email Address
-            </div>
-            <p className="px-4 py-2.5 bg-gray-100 rounded-lg border">
-              {authUser?.email}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-6 bg-gray-100 rounded-xl p-4">
-          <h2 className="text-lg font-medium text-primary mb-4">
-            Account Information
-          </h2>
-          <div className="space-y-3 text-sm">
-            <div className="flex items-center justify-between py-2 border-b border-gray-300">
-              <span>Member Since</span>
-              <span>{authUser.createdAt?.split("T")[0]}</span>
-            </div>
-            <div className="flex items-center justify-between py-2">
-              <span>Account Status</span>
-              <span className="text-green-500">Active</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default ProfilePage;
+export default LoginPage;
