@@ -1,6 +1,6 @@
-# LetsChat
+# 💬 LetsChat
 
-LetsChat is a real-time messaging application that allows users to send messages and interact in a collaborative environment. Built with a focus on ease of use and functionality, LetsChat is designed to offer a seamless chat experience.
+LetsChat is a real-time messaging application that allows users to send messages and interact in a collaborative environment. Built with a focus on ease of use and functionality, It is designed to offer a seamless chat experience.
 
 ## Screenshots
 
@@ -29,35 +29,40 @@ LetsChat is a real-time messaging application that allows users to send messages
 
 - **Backend:** Node.js, Express.js, WebSocket - socket.io (for real-time communication)
 
-- **Database:** MongoDB
+- **Database:** MongoDB, Mongoose
 
 
 ## 📂 Folder Structure
 
 ```
-picshare/
+letschat/
 ├── backend/
-│   ├── schemaTypes/  # Sanity.io schema definitions
-│   ├── .gitignore # Git ignored files
-│   ├── package.json  # Dependencies & scripts backend
-│   ├── sanity.cli.js # Sanity CLI configuration
-│   ├── sanity.config.js # Sanity project configuration
-├── frontend/
-│   ├── public/ #Favicon logo
 │   ├── src/
-│   │   ├── assets/ # Image and icon assets
-│   │   ├── components/  #  UI components - functionality
-│   │   ├── container/  # Page-level container components
-│   │   ├── utils/  # Utility functions and helper files
+│   │   ├── controllers/
+│   │   ├── lib/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   ├── routes/ 
+│   │   ├── index.js  
+|   |── .env #Environment variables
+|   |── .gitignore  # Git ignored files
+|   |── package.json  # Dependencies & scripts backend
+├── frontend/
+│   ├── public/ #Logo svg
+│   ├── src/
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── lib/
+│   │   ├── pages/
+│   │   ├── store/  
 │   │   ├── App.jsx  # Main React app component
-│   │   ├── client.js  # API calls and Sanity client setup
+│   │   ├── index.css  # tailwind css, daisyUI
 │   │   ├── main.jsx  # Entry point for React application
 |   |── .env #Environment variables
 |   |── .gitignore  # Git ignored files
 |   |── package.json  # Dependencies & scripts frontend
-|   |── tailwind.config.js #Tailwind configuration
+|   |── vite.config.js #Tailwind configuration
 ├── README.md  # Project documentation
-├── .gitignore  # Git ignored files
 ```
 
 ## 📜 License
