@@ -8,7 +8,7 @@ const server = http.createServer(app);//creating http server
 //initialize socket.io
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173"],//allows requests from frontend
+    origin: ["https://letschat-peic.onrender.com"], //allows requests from frontend
   },
 });
 
