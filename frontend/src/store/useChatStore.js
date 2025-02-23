@@ -14,7 +14,7 @@ export const useChatStore = create((set, get) => ({//updates the zustand state, 
   getUsers: async () => {
     set({ isUsersLoading: true });//loading indicator
     try {
-      const res = await axiosInstance.get("/messages/users");//making api request
+      const res = await axiosInstance.get("/api/messages/users");//making api request
       set({ users: res.data });//user state is updated
     } catch (error) {
       toast.error(error.response.data.message);
@@ -27,7 +27,7 @@ export const useChatStore = create((set, get) => ({//updates the zustand state, 
   getMessages: async (userId) => {
     set({ isMessagesLoading: true });
     try {
-      const res = await axiosInstance.get(`/messages/${userId}`);
+      const res = await axiosInstance.get(`/api/messages/${userId}`);
       set({ messages: res.data });
     } catch (error) {
       toast.error(error.response.data.message);
@@ -41,7 +41,7 @@ export const useChatStore = create((set, get) => ({//updates the zustand state, 
     const { selectedUser, messages } = get();
     try {
       const res = await axiosInstance.post(
-        `/messages/send/${selectedUser._id}`,
+        `/api/messages/send/${selectedUser._id}`,
         messageData
       );//sends new message to currently selected user
       set({ messages: [...messages, res.data] });

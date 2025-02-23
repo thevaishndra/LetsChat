@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://letschat-peic.onrender.com",
+    origin: ["http://localhost:5173", "https://letschat-peic.onrender.com"],
     credentials: true,
   })
 );

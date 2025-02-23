@@ -5,4 +5,5 @@ export const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+
 //instead of configuring axios everytime
