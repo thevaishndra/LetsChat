@@ -15,27 +15,29 @@ export const useAuthStore = create((set, get) => ({
   onlineUsers: [],
   socket: null,
 
+  //check user authentication
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
 
       set({ authUser: res.data });
-      get().connectSocket();
+      get().connectSocket(); //connect to websocket if user is authenticated
     } catch (error) {
       console.log("Error in checkAuth:", error);
-      set({ authUser: null });
+      set({ authUser: null }); //logs the user out
     } finally {
       set({ isCheckingAuth: false });
     }
   },
 
+  //user signup
   signup: async (data) => {
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
       set({ authUser: res.data });
       toast.success("Account created successfully");
-      get().connectSocket();
+      get().connectSocket(); //connect web socket after signup
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
@@ -43,6 +45,7 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  //user login
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
@@ -50,7 +53,7 @@ export const useAuthStore = create((set, get) => ({
       set({ authUser: res.data });
       toast.success("Logged in successfully");
 
-      get().connectSocket();
+      get().connectSocket(); //connects web socket after login
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
@@ -58,17 +61,19 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  //user logout
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
       set({ authUser: null });
       toast.success("Logged out successfully");
-      get().disconnectSocket();
+      get().disconnectSocket(); //disconnect web socket on logout
     } catch (error) {
       toast.error(error.response.data.message);
     }
   },
 
+  //user update profile
   updateProfile: async (data) => {
     set({ isUpdatingProfile: true });
     try {
@@ -83,23 +88,29 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  //connects authenticated user to web socket
   connectSocket: () => {
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
 
+    //establish a new web socket connection with server
     const socket = io(BASE_URL, {
       query: {
-        userId: authUser._id,
+        userId: authUser._id, //sends userid to identify
       },
     });
-    socket.connect();
+
+    socket.connect(); //connects the socket
 
     set({ socket: socket });
 
+    // Event listener for online users
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
     });
   },
+
+  //disconnect socket called during logout
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
   },
