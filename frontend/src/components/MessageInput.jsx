@@ -35,13 +35,10 @@ const MessageInput = () => {
   //sending a message
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!text.trim() && !imagePreview) return;//prevents sending empty messages
+    if (!text.trim() && !imagePreview) return;
 
     try {
-      await sendMessage({
-        text: text.trim(),
-        image: imagePreview,
-      });
+      await sendMessage({ text: text.trim(), image: imagePreview });
 
       // Clear form and resets input
       setText("");
@@ -53,7 +50,7 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="p-4 w-full">
+    <div className="p-2 w-full bg-white sticky bottom-0 left-0 right-0 max-w-[700px]  z-10">
       {/* preview of selected image before sending */}
       {imagePreview && (
         <div className="mb-3 flex items-center gap-2">
@@ -66,53 +63,47 @@ const MessageInput = () => {
             {/* before sending we can remove */}
             <button
               onClick={removeImage}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
-              flex items-center justify-center"
-              type="button"
+              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300 flex items-center justify-center"
             >
               <X className="size-3" />
             </button>
           </div>
         </div>
       )}
+      <form onSubmit={handleSendMessage} className="flex  w-full gap-2">
+        <input
+          type="text"
+          className="flex-1 w-full input input-bordered rounded-lg"
+          placeholder="Type a message..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleImageChange}
+        />
 
-      <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-        <div className="flex-1 flex gap-2">
-          <input
-            type="text"
-            className="w-full input input-bordered rounded-lg input-sm sm:input-md"
-            placeholder="Type a message..."
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            ref={fileInputRef}
-            onChange={handleImageChange}
-          />
-          {/* select image button */}
-          <button
-            type="button"//it's hidden input
-            className={`hidden sm:flex btn btn-circle 
-                     ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <Image size={20} />
-          </button>
-        </div>
+        {/* select image button */}
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="btn btn-circle"
+        >
+          <Image size={20} />
+        </button>
 
         {/* send button */}
         <button
           type="submit"
-          className="btn btn-sm btn-circle"
+          className="btn btn-circle"
           disabled={!text.trim() && !imagePreview}
         >
           <Send size={22} />
         </button>
       </form>
-
     </div>
   );
 };
